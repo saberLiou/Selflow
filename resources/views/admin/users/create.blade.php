@@ -23,13 +23,12 @@
             {!! Form::select('is_active', [1 => 'Active', 0 => 'Inactive'], 0, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group">
-            {!! Form::label('file', "Self-photo:") !!}
-            {!! Form::file('file', ['class' => 'form-control']) !!}
+            {!! Form::label('photo', "Photo:") !!}
+            {!! Form::file('photo', ['class' => 'form-control']) !!}
         </div>
         <div class="form-group">
             {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
         </div>
     {!! Form::close() !!}
-    <a href="{{route('users.index')}}"><button class="btn btn-info">Back</button></a>
     @include('includes.form_error')
 @endsection

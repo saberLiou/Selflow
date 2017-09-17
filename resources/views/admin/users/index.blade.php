@@ -29,5 +29,4 @@
             @endif
         </tbody>
     </table>
-    <a href="{{route('users.create')}}"><button class="btn btn-primary">Create User</button></a>
 @endsection
