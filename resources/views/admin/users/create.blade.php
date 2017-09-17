@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 @section('content')
+    <div class="row">
+        @include('includes.form_error')
+    </div>
     <h1>Create User</h1>
     {!! Form::open(['method' => 'POST', 'action' => 'AdminUsersController@store', 'files' => true]) !!}
         <div class="form-group">
@@ -30,5 +33,4 @@
             {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
         </div>
     {!! Form::close() !!}
-    @include('includes.form_error')
 @endsection

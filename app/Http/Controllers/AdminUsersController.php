@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User, App\Role, App\Photo;
-use App\Http\Requests\UsersRequest;
 
 class AdminUsersController extends Controller
 {
@@ -36,18 +35,27 @@ class AdminUsersController extends Controller
      * @param  \App\Http\Requests\UsersRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UsersRequest $request)
+    public function store(Request $request)
     {
+        /* Request validation. */
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required',
+            'role_id' => 'required'
+        ]);
+
         // return $request->all();
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
 
         if ($file = $request->file('photo')){
-            $name = time() . $file->getClientOriginalName();
-            /* Copy file into /public/images. */
-            $file->move('images', $name);
+            $name = $file->getClientOriginalName();
             /* Save file original name into database. */
             $photo = Photo::create(['file' => $name]);
+            /* Copy file into /public/images. */
+            $file->move($photo->directory, $name);
+            /* Save photo id into users table. */
             $input['photo_id'] = $photo->id;
         }
         User::create($input);
@@ -73,7 +81,9 @@ class AdminUsersController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.edit');
+        $user = User::findOrFail($id);
+        $roles = Role::pluck('name', 'id')->all();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -85,7 +95,29 @@ class AdminUsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        /* Request validation. */
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role_id' => 'required'
+        ]);
+        
+        // return $request->all();
+        $input = $request->all();
+        $input['password'] = bcrypt($request->password);
+
+        if ($file = $request->file('photo')){
+            $name = $file->getClientOriginalName();
+            /* Save file original name into database. */
+            $photo = Photo::create(['file' => $name]);
+            /* Copy file into /public/images. */
+            $file->move($photo->directory, $name);
+            /* Save photo id into users table. */
+            $input['photo_id'] = $photo->id;
+        }
+        User::findOrFail($id)->update($input);
+        return redirect('/admin/users');
     }
 
     /**
