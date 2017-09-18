@@ -107,17 +107,27 @@ class AdminUsersController extends Controller
         // return $request->all();
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
+        $user = User::findOrFail($id);
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            /* Save file original name into database. */
-            $photo = Photo::create(['file' => $name]);
-            /* Copy file into /public/images. */
-            $file->move($photo->directory, $name);
-            /* Save photo id into users table. */
-            $input['photo_id'] = $photo->id;
+            if ($user->photo){
+                /* Update the file in /public/images. */
+                unlink(public_path().$user->photo->file);
+                $file->move($user->photo->directory, $name);
+                /* Update file original name into database. */
+                Photo::find($user->photo_id)->update(['file' => $name]);
+            }
+            else{
+                /* Save file original name into database. */
+                $photo = Photo::create(['file' => $name]);
+                /* Save the file in /public/images. */
+                $file->move($photo->directory, $name);
+                /* Save photo id into users table. */
+                $input['photo_id'] = $photo->id;
+            }
         }
-        User::findOrFail($id)->update($input);
+        $user->update($input);
         return redirect('/admin/users');
     }
 
