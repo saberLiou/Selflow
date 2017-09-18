@@ -52,19 +52,20 @@
                 <!-- </ul> -->
                 <ul class="nav navbar-nav navbar-right">
                     @if(auth()->guest())
-                        @if(!Request::is('auth/login'))
+                        @if(!Request::is('login'))
                             <li><a href="{{ url('/auth/login') }}">Login</a></li>
                         @endif
-                        @if(!Request::is('auth/register'))
+                        @if(!Request::is('register'))
                             <li><a href="{{ url('/auth/register') }}">Register</a></li>
                         @endif
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user fa-fw"></i> {{ auth()->user()->name }} <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/admin/profile') }}/{{auth()->user()->id}}">Profile</a></li>
+                                    <li><a href="{{ route('home') }}">Back To Home</a></li>
                                     <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a></li>
                                     {!! Form::open(['method' => 'POST', 'action' => 'Auth\LoginController@logout', 'id' => 'logout-form', 'style' => 'display: none;']), Form::close() !!}
-                                    <li><a href="{{ url('/admin/profile') }}/{{auth()->user()->id}}">Profile</a></li>
                                 </ul>
                             </li>
                     @endif
