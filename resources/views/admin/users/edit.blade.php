@@ -5,7 +5,7 @@
     </div>
     <h1>Edit User</h1>
     <div class="col-sm-4">
-        <img src="{{ $user->photo ? $user->photo->file : 'http://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
+        <img height="250" width="250" src="{{ $user->photo ? $user->photo->file : 'http://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
     </div>
     <div class="col-sm-8">
         {!! Form::model($user, ['method' => 'PATCH', 'action' => ['AdminUsersController@update', $user->id], 'files' => true]) !!}

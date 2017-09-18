@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Photo extends Model
 {
     /**
-     * Image's storage directory.
+     * Images storage path.
      * @var array
      */
     public $directory = "images";
