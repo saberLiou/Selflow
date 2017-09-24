@@ -19,7 +19,7 @@ class Photo extends Model
      * Accessor function
      * @return modified file path
      */
-     public function getFileAttribute($value){
+    public function getFileAttribute($value){
         return "/".$this->directory."/".$value;
     }
 }

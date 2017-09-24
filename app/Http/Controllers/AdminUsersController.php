@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User, App\Role, App\Photo;
+use App\Http\Requests\UsersRequest;
 use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
@@ -36,16 +37,8 @@ class AdminUsersController extends Controller
      * @param  \App\Http\Requests\UsersRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersRequest $request)
     {
-        /* Request validation. */
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required',
-            'role_id' => 'required'
-        ]);
-
         // return $request->all();
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
@@ -94,16 +87,8 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        /* Request validation. */
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'role_id' => 'required'
-        ]);
-        
+    public function update(UsersRequest $request, $id)
+    {   
         // return $request->all();
         $input = $request->all();
         $input['password'] = bcrypt($request->password);
@@ -116,7 +101,7 @@ class AdminUsersController extends Controller
                 unlink(public_path().$user->photo->file);
                 $file->move($user->photo->directory, $name);
                 /* Update file original name into database. */
-                Photo::find($user->photo_id)->update(['file' => $name]);
+                Photo::findOrFail($user->photo_id)->update(['file' => $name]);
             }
             else{
                 /* Save file original name into database. */
