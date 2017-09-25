@@ -64,7 +64,7 @@ class AdminUsersController extends Controller
      */
     public function show($id)
     {
-        return view('admin.users.show');
+        // return view('admin.users.show');
     }
 
     /**
@@ -126,10 +126,25 @@ class AdminUsersController extends Controller
     {
         $user = User::findOrFail($id);
         Session::flash('delete_user', 'The No.'.$user->id.' user '.$user->name.' has been deleted.');
-        /* Delete user photo from images storage path. */
-        unlink(public_path().$user->photo->file);
-        /* Delete user photo record from database. */
-        $user->photo->delete();
+        if ($user->photo){
+            /* Delete user photo from images storage path. */
+            unlink(public_path().$user->photo->file);
+            /* Delete user photo record from database. */
+            $user->photo->delete();
+        }
+
+        /* Cascade delete photos of user's posts. */
+        if ($user->posts){
+            foreach ($user->posts as $post){
+                if ($post->photo){
+                    /* Delete post photo from images storage path. */
+                    unlink(public_path().$post->photo->file);
+                    /* Delete post photo record from database. */
+                    $post->photo->delete();
+                }
+            }
+        }
+        
         $user->delete();
         return redirect('/admin/users');
     }

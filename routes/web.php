@@ -38,8 +38,8 @@ Route::group(['middleware' => 'admin'], function(){
 //     Role::create(['name' => 'author']);
 //     Role::create(['name' => 'subscriber']);
 
-//     User::create(['role_id' => 1, 'is_active' => 1, 'name' => 'Guo-Xun Liu', 'email' => 'saberliou@gmail.com', 'password' => 'b024020017']);
-//     User::create(['role_id' => 1, 'is_active' => 0, 'name' => 'saberLiou', 'email' => 'w830708tw@yahoo.com.tw', 'password' => 'b122876868']);
+//     User::create(['role_id' => 1, 'is_active' => 1, 'name' => 'Guo-Xun Liu', 'email' => 'saberliou@gmail.com', 'password' => '$2y$10$WXJ98u8JXCZaOf9njHBe6O/Xl4H1QfbZ5.m.Ja2GUPJLBq7KM6oxC']);
+//     User::create(['role_id' => 1, 'is_active' => 0, 'name' => 'saberLiou', 'email' => 'w830708tw@yahoo.com.tw', 'password' => '$2y$10$BLOeLSRlQ65EARrc.R6zNeGG8lBesqu3us7oc5d8cumT6UFkQrlpu']);
      
-//     Category::create(['id' => 0, 'name' => 'Uncategorized']);
+//     Category::create(['name' => 'Uncategorized']);
 // });

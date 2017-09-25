@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PostsCreateRequest;
 use App\Post, App\User, App\Photo, App\Category;
+use App\Http\Requests\PostsRequest;
+use Illuminate\Support\Facades\Session;
 
 class AdminPostsController extends Controller
 {
@@ -40,11 +41,10 @@ class AdminPostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostsCreateRequest $request)
+    public function store(PostsRequest $request)
     {
         // return $request->all();
         $input = $request->all();
-        $user = User::findOrFail($input['user_id']);
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
@@ -55,7 +55,7 @@ class AdminPostsController extends Controller
             /* Save photo id into posts table. */
             $input['photo_id'] = $photo->id;
         }
-        $user->posts()->create($input);
+        User::findOrFail($input['user_id'])->posts()->create($input);
         return redirect('/admin/posts');
     }
 
@@ -67,7 +67,7 @@ class AdminPostsController extends Controller
      */
     public function show($id)
     {
-        //
+        // return view('admin.posts.show');
     }
 
     /**
@@ -78,7 +78,13 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $users = User::where([
+            ['is_active', 1],
+            ['role_id', '<=', 2]
+        ])->pluck('name', 'id')->all();
+        $categories = Category::pluck('name', 'id')->all();
+        return view('admin.posts.edit', compact('post', 'users', 'categories'));
     }
 
     /**
@@ -88,9 +94,36 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostsRequest $request, $id)
     {
-        //
+        // return $request->all();
+        $input = $request->all();
+        $post = Post::findOrFail($id);
+
+        if ($file = $request->file('photo')){
+            $name = $file->getClientOriginalName();
+            if ($post->photo){
+                /* Update the file in /public/images. */
+                unlink(public_path().$post->photo->file);
+                $file->move($post->photo->directory, $name);
+                /* Update file original name into database. */
+                Photo::findOrFail($post->photo_id)->update(['file' => $name]);
+            }
+            else{
+                /* Save file original name into database. */
+                $photo = Photo::create(['file' => $name]);
+                /* Save the file in /public/images. */
+                $file->move($photo->directory, $name);
+                /* Save photo id into posts table. */
+                $input['photo_id'] = $photo->id;
+            }
+        }
+
+        if ($input['user_id'] != $post->user_id){
+            $post->user_id = $input['user_id'];
+        }
+        $post->update($input);
+        return redirect('/admin/posts');
     }
 
     /**
@@ -101,6 +134,15 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        Session::flash('delete_post', 'The No.'.$post->id.' post "'.$post->title.'" has been deleted.');
+        if ($post->photo){
+            /* Delete post photo from images storage path. */
+            unlink(public_path().$post->photo->file);
+            /* Delete post photo record from database. */
+            $post->photo->delete();
+        }
+        $post->delete();
+        return redirect('/admin/posts');
     }
 }

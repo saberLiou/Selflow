@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 @section('content')
+    @if (Session::has('delete_post'))
+        <div class="alert alert-info">{{ session('delete_post') }}</div>
+    @endif
     <h1>Posts</h1>
     <table class="table">
         <thead>
@@ -24,7 +27,7 @@
                         <td>{{ $post->user->name }}</td>
                         <td>{{ $post->category->name }}</td>
                         <td>{{ $post->title }}</td>
-                        <td>{{ $post->body }}</td>
+                        <td>{{ str_limit($post->body, 50) }}</td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>{{ $post->updated_at->diffForHumans() }}</td>
                         <td><a href="{{ route('posts.edit', $post->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
