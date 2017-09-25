@@ -31,7 +31,7 @@ Route::group(['middleware' => 'admin'], function(){
 // });
 
 /* Default data if artisan refresh the migrations. */
-// use App\Role, App\User;
+// use App\Role, App\User, App\Category;
 
 // Route::get('/after_refresh', function(){
 //     Role::create(['name' => 'administrator']);
@@ -40,4 +40,6 @@ Route::group(['middleware' => 'admin'], function(){
 
 //     User::create(['role_id' => 1, 'is_active' => 1, 'name' => 'Guo-Xun Liu', 'email' => 'saberliou@gmail.com', 'password' => 'b024020017']);
 //     User::create(['role_id' => 1, 'is_active' => 0, 'name' => 'saberLiou', 'email' => 'w830708tw@yahoo.com.tw', 'password' => 'b122876868']);
+     
+//     Category::create(['id' => 0, 'name' => 'Uncategorized']);
 // });

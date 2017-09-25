@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PostsCreateRequest;
-use App\Post, App\User, App\Photo;
+use App\Post, App\User, App\Photo, App\Category;
 
 class AdminPostsController extends Controller
 {
@@ -30,7 +30,8 @@ class AdminPostsController extends Controller
             ['is_active', 1],
             ['role_id', '<=', 2]
         ])->pluck('name', 'id')->all();
-        return view('admin.posts.create', compact('users'));
+        $categories = Category::pluck('name', 'id')->all();
+        return view('admin.posts.create', compact('users', 'categories'));
     }
 
     /**

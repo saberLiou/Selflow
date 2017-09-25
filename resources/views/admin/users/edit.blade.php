@@ -35,8 +35,11 @@
                 {!! Form::file('photo', ['class' => 'form-control']) !!}
             </div>
             <div class="form-group">
-                {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
+                <button type="submit" class="btn btn-primary col-sm-2 col-sm-offset-3"><i class="fa fa-upload"></i> Update</button>
             </div>
+        {!! Form::close() !!}
+        {!! Form::open(['method' => 'DELETE', 'action' => ['AdminUsersController@destroy', $user->id]]) !!}
+            <button type="submit" class="btn btn-danger col-sm-2 col-sm-offset-2"><i class="fa fa-trash"></i> Delete</button>
         {!! Form::close() !!}
     </div>
 @endsection

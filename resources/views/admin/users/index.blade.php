@@ -15,7 +15,7 @@
                 <th>Status</th>
                 <th>Created Time</th>
                 <th>Updated Time</th>
-                <th><div class="col-sm-offset-3">Action<div></th>
+                <th>Edit User</th>
             </tr>
         </thead>
         <tbody>
@@ -30,18 +30,7 @@
                         <td>{{ $user->is_active ? "Active" : "Inactive" }}</td>
                         <td>{{ $user->created_at->diffForHumans() }}</td>
                         <td>{{ $user->updated_at->diffForHumans() }}</td>
-                        <td>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <a href="{{ route('users.edit', $user->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench"></i> Edit</button></a>
-                                </div>
-                                <div class="col-sm-5">
-                                    {!! Form::open(['method' => 'DELETE', 'action' => ['AdminUsersController@destroy', $user->id]]) !!}
-                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </td>
+                        <td><a href="{{ route('users.edit', $user->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
                     </tr>
                 @endforeach
             @endif

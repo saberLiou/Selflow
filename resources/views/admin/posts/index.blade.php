@@ -12,7 +12,7 @@
                 <th>Body</th>
                 <th>Created Time</th>
                 <th>Updated Time</th>
-                <th><div class="col-sm-offset-3">Action<div></th>
+                <th>Edit Post</th>
             </tr>
         </thead>
         <tbody>
@@ -22,23 +22,12 @@
                         <td>{{ $post->id }}</td>
                         <td><img height="50" width="50" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}"></td>
                         <td>{{ $post->user->name }}</td>
-                        <td>{{ $post->category_id }}</td>
+                        <td>{{ $post->category->name }}</td>
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->body }}</td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>{{ $post->updated_at->diffForHumans() }}</td>
-                        <td>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <a href="{{ route('posts.edit', $post->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench"></i> Edit</button></a>
-                                </div>
-                                <div class="col-sm-5">
-                                    {!! Form::open(['method' => 'DELETE', 'action' => ['AdminPostsController@destroy', $post->id]]) !!}
-                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </td>
+                        <td><a href="{{ route('posts.edit', $post->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
                     </tr>
                 @endforeach
             @endif
