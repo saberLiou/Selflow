@@ -61,8 +61,13 @@ class AdminCategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit', compact('category'));
+        if ($id == 1){
+            return redirect('/admin/categories');
+        }
+        else{
+            $category = Category::findOrFail($id);
+            return view('admin.categories.edit', compact('category'));
+        }
     }
 
     /**
@@ -74,7 +79,9 @@ class AdminCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Category::findOrFail($id)->update($request->all());
+        if ($id != 1){
+            Category::findOrFail($id)->update($request->all());
+        }
         return redirect('/admin/categories');
     }
 
@@ -86,13 +93,15 @@ class AdminCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        Session::flash('delete_category', 'The No.'.$category->id.' category "'.$category->name.'" has been deleted.');
-        /* Set related posts to Uncategorized. */
-        foreach ($category->posts as $post){
-            $post->update(['category_id' => 1]);
+        if ($id != 1){
+            $category = Category::findOrFail($id);
+            Session::flash('delete_category', 'The No.'.$category->id.' category "'.$category->name.'" has been deleted.');
+            /* Set related posts to Uncategorized. */
+            foreach ($category->posts as $post){
+                $post->update(['category_id' => 1]);
+            }
+            $category->delete();
         }
-        $category->delete();
         return redirect('/admin/categories');
     }
 }
