@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('set null');
         });
     }
 

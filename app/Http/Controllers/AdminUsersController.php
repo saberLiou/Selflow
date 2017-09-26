@@ -64,7 +64,7 @@ class AdminUsersController extends Controller
      */
     public function show($id)
     {
-        // return view('admin.users.show');
+        // not used.
     }
 
     /**

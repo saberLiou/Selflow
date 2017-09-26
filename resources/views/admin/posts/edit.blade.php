@@ -36,7 +36,9 @@
             </div>
         {!! Form::close() !!}
         {!! Form::open(['method' => 'DELETE', 'action' => ['AdminPostsController@destroy', $post->id]]) !!}
-            <button type="submit" class="btn btn-danger col-sm-2 col-sm-offset-2"><i class="fa fa-trash"></i> Delete</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger col-sm-2 col-sm-offset-2"><i class="fa fa-trash"></i> Delete</button>
+            </div>
         {!! Form::close() !!}
     </div>
 @endsection

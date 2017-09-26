@@ -10,6 +10,7 @@
         <!-- Bootstrap Core CSS -->
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
+        @yield('styles')
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -118,10 +119,10 @@
                                 <a href="#"><i class="fa fa-wrench fa-fw"></i>Media<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="/media">All Media</a>
+                                        <a href="{{ route('photos.index') }}">All Media</a>
                                     </li>
                                     <li>
-                                        <a href="">Upload Media</a>
+                                        <a href="{{ route('photos.create') }}">Upload Media</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
@@ -257,6 +258,7 @@
         <!-- /#wrapper -->
         <!-- jQuery -->
         <script src="{{ asset('js/libs.js') }}"></script>
+        @yield('scripts')
         @yield('footer')
     </body>
 </html>

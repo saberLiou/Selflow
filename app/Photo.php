@@ -22,4 +22,12 @@ class Photo extends Model
     public function getFileAttribute($value){
         return "/".$this->directory."/".$value;
     }
+
+    public function user(){
+        return $this->hasOne('App\User');
+    }
+
+    public function post(){
+        return $this->hasOne('App\Post');
+    }
 }
