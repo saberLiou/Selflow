@@ -89,7 +89,7 @@
                                 <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Users<span class="fa arrow"></span></a>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i> Users<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
                                         <a href="{{ route('users.index') }}">All Users</a>
@@ -109,6 +109,9 @@
                                     <li>
                                         <a href="{{ route('posts.create') }}">Create Post</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('comments.index') }}">All Comments</a>
+                                    </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
@@ -116,13 +119,13 @@
                                 <a href="{{ route('categories.index') }}"><i class="fa fa-wrench fa-fw"></i> Categories</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Media<span class="fa arrow"></span></a>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i> Photos<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{ route('photos.index') }}">All Media</a>
+                                        <a href="{{ route('photos.index') }}">All Photos</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('photos.create') }}">Upload Media</a>
+                                        <a href="{{ route('photos.create') }}">Upload Photo</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->

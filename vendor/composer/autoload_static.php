@@ -307,8 +307,12 @@ class ComposerStaticInitddb119367801fbd40b3422b52d828d31
 
     public static $classMap = array (
         'App\\Category' => __DIR__ . '/../..' . '/app/Category.php',
+        'App\\Comment' => __DIR__ . '/../..' . '/app/Comment.php',
+        'App\\CommentReply' => __DIR__ . '/../..' . '/app/CommentReply.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\AdminCategoriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminCategoriesController.php',
+        'App\\Http\\Controllers\\AdminPhotosController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminPhotosController.php',
         'App\\Http\\Controllers\\AdminPostsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminPostsController.php',
         'App\\Http\\Controllers\\AdminUsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminUsersController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -324,7 +328,8 @@ class ComposerStaticInitddb119367801fbd40b3422b52d828d31
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
-        'App\\Http\\Requests\\PostsCreateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/PostsCreateRequest.php',
+        'App\\Http\\Requests\\CategoriesRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CategoriesRequest.php',
+        'App\\Http\\Requests\\PostsRequest' => __DIR__ . '/../..' . '/app/Http/Requests/PostsRequest.php',
         'App\\Http\\Requests\\UsersRequest' => __DIR__ . '/../..' . '/app/Http/Requests/UsersRequest.php',
         'App\\Photo' => __DIR__ . '/../..' . '/app/Photo.php',
         'App\\Post' => __DIR__ . '/../..' . '/app/Post.php',

@@ -39,6 +39,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Post');
     }
 
+    public function comments(){
+        return $this->hasMany('App\Comment');
+    }
+
+    public function replies(){
+        return $this->hasMany('App\CommentReply');
+    }
+
     public function isAdmin(){
         return $this->role->name == "administrator" and $this->is_active == 1;
     }

@@ -8,8 +8,7 @@
                 <div class="panel-heading">Register</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
+                    {!! Form::open(['method' => 'POST', 'action' => 'Auth\RegisterController@register', 'files' => true, 'class' => 'form-horizontal']) !!}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
@@ -62,13 +61,32 @@
                         </div>
 
                         <div class="form-group">
+                            {!! Form::label('role', "Role", ['class' => 'col-md-4 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::select('role', array_map('ucfirst', App\Role::where('id', '!=', '1')->pluck('name', 'id')->all()), null, ['class' => 'form-control', 'placeholder' => '-- Choose a role. --']) !!}
+                                @if ($errors->has('role'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('role') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('photo', "Photo", ['class' => 'col-md-4 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::file('photo', ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     Register
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

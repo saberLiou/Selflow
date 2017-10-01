@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\User, App\Photo;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -50,7 +51,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|confirmed',
+            'role' => 'required',
         ]);
     }
 
@@ -66,6 +68,28 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role_id' => $data['role'],
+            'is_active' => 1,
+            'photo_id' => $data['photo_id']
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $input = $request->all();
+        if ($file = $request->file('photo')){
+            $name = $file->getClientOriginalName();
+            /* Save file original name into database. */
+            $photo = Photo::create(['file' => $name]);
+            /* Copy file into /public/images. */
+            $file->move($photo->directory, $name);
+            /* Save photo id into users table. */
+            $input['photo_id'] = $photo->id;
+        }
+
+        $this->guard()->login($this->create($input));
+        return redirect($this->redirectPath());
     }
 }
