@@ -3,7 +3,7 @@
     @if (Session::has('delete_reply'))
         <div class="alert alert-info">{{ session('delete_reply') }}</div>
     @endif
-    <h1>Replies of Comment "{{ $comment->body }}"<br>on Post "<a href="{{ route('home.post', $comment->post->id) }}">{{ $comment->post->title }}</a>"</h1>
+    <h1>Replies of Comment "{{ $comment->body }}"<br>on Post "<a href="{{ route('home.post', $comment->post->slug) }}">{{ $comment->post->title }}</a>"</h1>
     <table class="table">
         <thead>
             <tr>

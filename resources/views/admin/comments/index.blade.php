@@ -24,7 +24,7 @@
                 @foreach ($comments as $comment)
                     <tr>
                         <td>{{ $comment->id }}</td>
-                        <td><a href="{{ route('home.post', $comment->post->id) }}">{{ $comment->post->title }}</a></td>
+                        <td><a href="{{ route('home.post', $comment->post->slug) }}">{{ $comment->post->title }}</a></td>
                         <td><img height="50" width="50" src="{{ $comment->user->photo ? $comment->user->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}"></td>
                         <td>{{ $comment->user->name }}</td>
                         <td>{{ $comment->body }}</td>

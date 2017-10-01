@@ -37,16 +37,17 @@ class PostCommentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CommentsRequest $request, $id)
+    public function store(CommentsRequest $request, $slug)
     {
         // return $request->all();
+        $post = Post::findBySlugOrFail($slug);
         $data = [
-            'post_id' => $id,
+            'post_id' => $post->id,
             'user_id' => Auth::user()->id,
             'body'    => $request->body
         ];
         Comment::create($data);
-        return redirect('/post/'.$id);
+        return redirect('/post/'.$slug);
     }
 
     /**

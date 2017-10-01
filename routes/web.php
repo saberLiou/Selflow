@@ -19,9 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/post/{id}', ['as' => 'home.post', 'uses' => 'AdminPostsController@post']);
-Route::post('/post/{id}/comments', ['as' => 'home.comment', 'uses' => 'PostCommentsController@store']);
-Route::post('/post/{id}/comment/replies', ['as' => 'home.reply', 'uses' => 'CommentRepliesController@store']);
+Route::get('/post/{slug}', ['as' => 'home.post', 'uses' => 'AdminPostsController@post']);
+Route::post('/post/{slug}/comments', ['as' => 'home.comment', 'uses' => 'PostCommentsController@store']);
+Route::post('/post/{slug}/comment/replies', ['as' => 'home.reply', 'uses' => 'CommentRepliesController@store']);
 
 Route::group(['middleware' => 'admin'], function(){
     Route::resource('/admin/users', 'AdminUsersController');

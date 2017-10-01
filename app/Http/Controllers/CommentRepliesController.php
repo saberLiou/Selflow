@@ -36,7 +36,7 @@ class CommentRepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RepliesRequest $request, $id)
+    public function store(RepliesRequest $request, $slug)
     {
         // return $request->all();
         $data = [
@@ -45,7 +45,7 @@ class CommentRepliesController extends Controller
             'body'       => $request->reply
         ];
         $reply = CommentReply::create($data);
-        return redirect('/post/'.$id);
+        return redirect('/post/'.$slug);
     }
 
     /**

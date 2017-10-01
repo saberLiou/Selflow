@@ -3,7 +3,7 @@
     @if (Session::has('delete_comment'))
         <div class="alert alert-info">{{ session('delete_comment') }}</div>
     @endif
-    <h1>Comments of Post "<a href="{{ route('home.post', $post->id) }}">{{ $post->title }}</a>"</h1>
+    <h1>Comments of Post "<a href="{{ route('home.post', $post->slug) }}">{{ $post->title }}</a>"</h1>
     <table class="table">
         <thead>
             <tr>

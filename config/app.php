@@ -182,6 +182,11 @@ return [
          * Laravel Collective Service Providers...
          */
         Collective\Html\HtmlServiceProvider::class,
+
+        /*
+         * Eloquent Sluggable Service Providers...
+         */
+        Cviebrock\EloquentSluggable\ServiceProvider::class
     ],
 
     /*

@@ -27,7 +27,7 @@
                         <td><img height="50" width="50" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}"></td>
                         <td>{{ $post->user->name }}</td>
                         <td>{{ $post->category->name }}</td>
-                        <td><a href="{{ route('home.post', $post->id) }}">{{ $post->title }}</a></td>
+                        <td><a href="{{ route('home.post', $post->slug) }}">{{ $post->title }}</a></td>
                         <td>{{ str_limit($post->body, 50) }}</td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>{{ $post->updated_at->diffForHumans() }}</td>

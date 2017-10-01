@@ -56,7 +56,7 @@
                                 <img height="64" width="64" class="media-object" src="{{ Auth::user()->photo ? Auth::user()->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
                             </a>
                             <div class="media-body">
-                                {!! Form::open(['method' => 'POST', 'action' => ['CommentRepliesController@store', $post->id]])!!}
+                                {!! Form::open(['method' => 'POST', 'action' => ['CommentRepliesController@store', $post->slug]])!!}
                                     {!! Form::hidden('comment_id', $comment->id) !!}
                                     <div class="form-group{{ $errors->has('reply') ? ' has-error' : '' }}">
                                         {!! Form::text('reply', null, ['class' => 'form-control', 'placeholder' => 'Make a reply...']) !!}
@@ -81,7 +81,7 @@
                 <img height="64" width="64" class="media-object" src="{{ Auth::user()->photo ? Auth::user()->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
             </a>
             <div class="media-body">
-                {!! Form::open(['method' => 'POST', 'action' => ['PostCommentsController@store', $post->id]])!!}
+                {!! Form::open(['method' => 'POST', 'action' => ['PostCommentsController@store', $post->slug]])!!}
                     <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
                         {!! Form::text('body', null, ['class' => 'form-control', 'placeholder' => 'Leave a commnet...']) !!}
                         <small class="text-danger">{{ $errors->first('body') }}</small>
