@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+    @include('includes.tinyeditor')
     <h1>Edit Post</h1>
     <div class="col-sm-4">
         <img height="250" width="250" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}" class="img-response img-rounded">

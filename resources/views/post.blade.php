@@ -14,7 +14,7 @@
     <img class="img-responsive" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/900x300/?text=No%20Photo' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}">
     <hr>
     <!-- Post Content -->
-    <p>{{ $post->body }}</p>
+    <p>{!! $post->body !!}</p>
     <hr>
     <!-- Comments and Replies-->
 
