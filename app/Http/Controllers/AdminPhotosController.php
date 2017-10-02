@@ -95,4 +95,14 @@ class AdminPhotosController extends Controller
         $photo->delete();
         return redirect('/admin/photos');
     }
+
+    public function multiDestroy(Request $request){
+        // return dd($request->all());
+        $photos = Photo::findOrFail($request->delete_photos);
+        foreach ($photos as $photo){
+            unlink(public_path().$photo->file);
+            $photo->delete();
+        }
+        return redirect('/admin/photos');
+    }
 }
