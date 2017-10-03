@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'role_id' => $data['role'],
             'is_active' => 1,
-            'photo_id' => $data['photo_id']
+            'photo_id' => isset($data['photo_id']) ? $data['photo_id'] : null
         ]);
     }
 
