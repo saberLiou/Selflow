@@ -1,4 +1,4 @@
-# Selflow(Roughly Completed.)
+# Selflow (Roughly Completed.)
 A blog like CMS web application with an admin panel for administrator to control, made of Laravel 5.4, developed in Homestead.
 
 After migrating all tables, you must use php artisan db:seed to insert default three roles "administrator, author and subscriber" and the category "Uncategorized" to set all the things done in this system.
