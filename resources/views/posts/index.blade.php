@@ -21,15 +21,17 @@
             </div>
         @endforeach
     @else
-        <div class="panel panel-default col-md-8 col-md-offset-4">
-            <div class="panel-heading text-center">
-                <h4>You have no post in any flow.</h4>
-            </div>
-            @if (Auth::user()->isAuthor())
-                <div class="panel-body text-center">
-                    <h4><a href="{{ route('posts.create') }}">Click to create one</a></h4>
+        <div class="col-md-8 col-md-offset-4">
+            <div class="panel panel-default ">
+                <div class="panel-heading text-center">
+                    <h4>You have no post in any flow.</h4>
                 </div>
-            @endif
+                @if (Auth::user()->isAuthor())
+                    <div class="panel-body text-center">
+                        <h4><a href="{{ route('posts.create') }}">Click to create one</a></h4>
+                    </div>
+                @endif
+            </div>
         </div>
     @endif
 </dvi>
