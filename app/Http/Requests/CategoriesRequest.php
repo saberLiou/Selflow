@@ -28,8 +28,8 @@ class CategoriesRequest extends FormRequest
             $name_role = 'required|unique:categories';
         }
         else{
-            // Update name request
-            $name_role = 'required';
+            // Update name request (unique ignore itself)
+            $name_role = 'required|unique:categories,name,'.$this->category;
         }
         return [
             'name' => $name_role

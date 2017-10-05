@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Selflow</title>
+        <title>{{ config('app.name', 'Laravel') }}</title>
         <!-- Bootstrap Core CSS -->
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         <link href="{{asset('css/libs.css')}}" rel="stylesheet">
@@ -29,52 +29,24 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Home</a>
+                    <a class="navbar-brand" href="{{ route('brand') }}">
+                        <i class="fa fa-mail-reply"></i> Back to Home
+                    </a>
                 </div>
-                <!-- /.navbar-header -->
-                <!-- <ul class="nav navbar-top-links navbar-right"> -->
-                    <!-- /.dropdown -->
-                    <!-- <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li><a href="{{ url('/logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                            </li>
-                        </ul> -->
-                        <!-- /.dropdown-user -->
-                    <!-- </li> -->
-                    <!-- /.dropdown -->
-                <!-- </ul> -->
                 <ul class="nav navbar-nav navbar-right">
-                    @if(auth()->guest())
-                        @if(!Request::is('login'))
-                            <li><a href="{{ url('/auth/login') }}">Login</a></li>
-                        @endif
-                        @if(!Request::is('register'))
-                            <li><a href="{{ url('/auth/register') }}">Register</a></li>
-                        @endif
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user fa-fw"></i> {{ auth()->user()->name }} <span class="caret"></span></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/admin/profile') }}/{{auth()->user()->id}}">Profile</a></li>
-                                    <li><a href="{{ route('home') }}">Back To Home</a></li>
-                                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a></li>
-                                    {!! Form::open(['method' => 'POST', 'action' => 'Auth\LoginController@logout', 'id' => 'logout-form', 'style' => 'display: none;']), Form::close() !!}
-                                </ul>
-                            </li>
-                    @endif
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user fa-fw"></i> {{ auth()->user()->name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ route('admin.users.show', Auth::user()->id) }}">Profile</a></li>
+                            <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a></li>
+                            {!! Form::open(['method' => 'POST', 'action' => 'Auth\LoginController@logout', 'id' => 'logout-form', 'style' => 'display: none;']), Form::close() !!}
+                        </ul>
+                    </li>
                 </ul>
                 <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
-                            <li class="sidebar-search">
+                            <!-- <li class="sidebar-search">
                                 <div class="input-group custom-search-form">
                                     <input type="text" class="form-control" placeholder="Search...">
                                         <span class="input-group-btn">
@@ -83,19 +55,18 @@
                                             </button>
                                         </span>
                                 </div>
-                                <!-- /input-group -->
-                            </li>
+                            </li> -->
                             <li>
-                                <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                                <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Users<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{ route('users.index') }}">All Users</a>
+                                        <a href="{{ route('admin.users.index') }}">All Users</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('users.create') }}">Create User</a>
+                                        <a href="{{ route('admin.users.create') }}">Create User</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
@@ -104,115 +75,31 @@
                                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{ route('posts.index') }}">All Posts</a>
+                                        <a href="{{ route('admin.posts.index') }}">All Posts</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('posts.create') }}">Create Post</a>
+                                        <a href="{{ route('admin.posts.create') }}">Create Post</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('comments.index') }}">All Comments</a>
+                                        <a href="{{ route('admin.comments.index') }}">All Comments</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
-                            </li>
-                            <li>
-                                <a href="{{ route('categories.index') }}"><i class="fa fa-wrench fa-fw"></i> Categories</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Photos<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{ route('photos.index') }}">All Photos</a>
+                                        <a href="{{ route('admin.photos.index') }}">All Photos</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('photos.create') }}">Upload Photo</a>
+                                        <a href="{{ route('admin.photos.create') }}">Upload Photo</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="flot.html">Flot Charts</a>
-                                    </li>
-                                    <li>
-                                        <a href="morris.html">Morris.js Charts</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-second-level -->
-                            </li>
-                            <li>
-                                <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                            </li>
-                            <li>
-                                <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="panels-wells.html">Panels and Wells</a>
-                                    </li>
-                                    <li>
-                                        <a href="buttons.html">Buttons</a>
-                                    </li>
-                                    <li>
-                                        <a href="notifications.html">Notifications</a>
-                                    </li>
-                                    <li>
-                                        <a href="typography.html">Typography</a>
-                                    </li>
-                                    <li>
-                                        <a href="icons.html"> Icons</a>
-                                    </li>
-                                    <li>
-                                        <a href="grid.html">Grid</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-second-level -->
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="#">Second Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Second Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level <span class="fa arrow"></span></a>
-                                        <ul class="nav nav-third-level">
-                                            <li>
-                                                <a href="#">Third Level Item</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Third Level Item</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Third Level Item</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Third Level Item</a>
-                                            </li>
-                                        </ul>
-                                        <!-- /.nav-third-level -->
-                                    </li>
-                                </ul>
-                                <!-- /.nav-second-level -->
-                            </li>
-                            <li class="active">
-                                <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a class="active" href="blank.html">Blank Page</a>
-                                    </li>
-                                    <li>
-                                        <a href="login.html">Login Page</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-second-level -->
+                                <a href="{{ route('admin.categories.index') }}"><i class="fa fa-wrench fa-fw"></i> Categories</a>
                             </li>
                         </ul>
                     </div>
@@ -220,27 +107,6 @@
                 </div>
                 <!-- /.navbar-static-side -->
             </nav>
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="/profile"><i class="fa fa-dashboard fa-fw"></i>Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Posts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="">All Posts</a>
-                                </li>
-                                <li>
-                                    <a href="">Create Post</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
         <!-- Page Content -->
         <div id="page-wrapper">

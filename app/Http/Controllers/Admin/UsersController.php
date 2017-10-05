@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User, App\Role, App\Photo;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UsersRequest;
 use Illuminate\Support\Facades\Session;
 
-class AdminUsersController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,12 +43,18 @@ class AdminUsersController extends Controller
     {
         // return $request->all();
         $input = $request->all();
+        $input['pwd_num'] = strlen($request->password);
         $input['password'] = bcrypt($request->password);
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            /* Save file original name into database. */
+            /* Save file name into database first. */
             $photo = Photo::create(['file' => $name]);
+            /* Slug id with file name to avoid photos with same file name
+               unlinked at the delete moment. */
+            $name = strval($photo->id)."_".substr($photo->file, 8);
+            /* Update the slugged file name into database. */
+            $photo->update(['file' => $name]);
             /* Copy file into /public/images. */
             $file->move($photo->directory, $name);
             /* Save photo id into users table. */
@@ -64,7 +72,8 @@ class AdminUsersController extends Controller
      */
     public function show($id)
     {
-        // not used.
+        $user = Auth::user();
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -89,23 +98,33 @@ class AdminUsersController extends Controller
      */
     public function update(UsersRequest $request, $id)
     {   
-        // return $request->all();
+        //return $request->all();
         $input = $request->all();
+        $input['pwd_num'] = strlen($request->password);
         $input['password'] = bcrypt($request->password);
         $user = User::findOrFail($id);
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            if ($user->photo){
-                /* Update the file in /public/images. */
+            if (count($user->photo) > 0){
+                /* Remove the file in /public/images first. */
                 unlink(public_path().$user->photo->file);
-                $file->move($user->photo->directory, $name);
-                /* Update file original name into database. */
+                /* Slug id with file name to avoid photos with same file name
+                   unlinked at the delete moment. */
+                $name = strval($user->photo_id)."_".$name;
+                /* Update the slugged file name into database. */
                 Photo::findOrFail($user->photo_id)->update(['file' => $name]);
+                /* Save the file in /public/images. */
+                $file->move($user->photo->directory, $name);
             }
             else{
-                /* Save file original name into database. */
+                /* Save file name into database first. */
                 $photo = Photo::create(['file' => $name]);
+                /* Slug id with file name to avoid photos with same file name
+                   unlinked at the delete moment. */
+                $name = strval($photo->id)."_".substr($photo->file, 8);
+                /* Update the slugged file name into database. */
+                $photo->update(['file' => $name]);
                 /* Save the file in /public/images. */
                 $file->move($photo->directory, $name);
                 /* Save photo id into users table. */
@@ -126,7 +145,7 @@ class AdminUsersController extends Controller
     {
         $user = User::findOrFail($id);
         Session::flash('delete_user', 'The No.'.$user->id.' user '.$user->name.' has been deleted.');
-        if ($user->photo){
+        if (count($user->photo) > 0){
             /* Delete user photo from images storage path. */
             unlink(public_path().$user->photo->file);
             /* Delete user photo record from database. */
@@ -134,9 +153,9 @@ class AdminUsersController extends Controller
         }
 
         /* Cascade delete photos of user's posts. */
-        if ($user->posts){
+        if (count($user->posts) > 0){
             foreach ($user->posts as $post){
-                if ($post->photo){
+                if (count($post->photo) > 0){
                     /* Delete post photo from images storage path. */
                     unlink(public_path().$post->photo->file);
                     /* Delete post photo record from database. */

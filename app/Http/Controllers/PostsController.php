@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post, App\User, App\Photo, App\Category;
+use App\Category, App\Photo, App\User, App\Post;
 use App\Http\Requests\PostsRequest;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
-class AdminPostsController extends Controller
+class PostsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,7 @@ class AdminPostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(2);
-        return view('admin.posts.index', compact('posts'));
+        // not used.
     }
 
     /**
@@ -27,12 +27,8 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        $users = User::where([
-            ['is_active', 1],
-            ['role_id', '<=', 2]
-        ])->pluck('name', 'id')->all();
         $categories = Category::pluck('name', 'id')->all();
-        return view('admin.posts.create', compact('users', 'categories'));
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -48,15 +44,20 @@ class AdminPostsController extends Controller
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            /* Save file original name into database. */
+            /* Save file name into database first. */
             $photo = Photo::create(['file' => $name]);
+            /* Slug id with file name to avoid photos with same file name
+               unlinked at the delete moment. */
+            $name = strval($photo->id)."_".substr($photo->file, 8);
+            /* Update the slugged file name into database. */
+            $photo->update(['file' => $name]);
             /* Copy file into /public/images. */
             $file->move($photo->directory, $name);
             /* Save photo id into posts table. */
             $input['photo_id'] = $photo->id;
         }
-        User::findOrFail($input['user_id'])->posts()->create($input);
-        return redirect('/admin/posts');
+        $post = User::findOrFail(Auth::user()->id)->posts()->create($input);
+        return redirect('/home/posts/'.$post->slug);
     }
 
     /**
@@ -65,9 +66,10 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        // not used.
+        $post = Post::findBySlugOrFail($slug);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -76,15 +78,11 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        $post = Post::findOrFail($id);
-        $users = User::where([
-            ['is_active', 1],
-            ['role_id', '<=', 2]
-        ])->pluck('name', 'id')->all();
+        $post = Post::findBySlugOrFail($slug);
         $categories = Category::pluck('name', 'id')->all();
-        return view('admin.posts.edit', compact('post', 'users', 'categories'));
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -102,28 +100,39 @@ class AdminPostsController extends Controller
 
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            if ($post->photo){
-                /* Update the file in /public/images. */
+            if (count($post->photo) > 0){
+                /* Remove the file in /public/images first. */
                 unlink(public_path().$post->photo->file);
-                $file->move($post->photo->directory, $name);
-                /* Update file original name into database. */
+                /* Slug id with file name to avoid photos with same file name
+                   unlinked at the delete moment. */
+                $name = strval($post->photo_id)."_".$name;
+                /* Update the slugged file name into database. */
                 Photo::findOrFail($post->photo_id)->update(['file' => $name]);
+                /* Save the file in /public/images. */
+                $file->move($post->photo->directory, $name);
             }
             else{
-                /* Save file original name into database. */
+                /* Save file name into database first. */
                 $photo = Photo::create(['file' => $name]);
+                /* Slug id with file name to avoid photos with same file name
+                   unlinked at the delete moment. */
+                $name = strval($photo->id)."_".substr($photo->file, 8);
+                /* Update the slugged file name into database. */
+                $photo->update(['file' => $name]);
                 /* Save the file in /public/images. */
                 $file->move($photo->directory, $name);
                 /* Save photo id into posts table. */
                 $input['photo_id'] = $photo->id;
             }
         }
-
-        if ($input['user_id'] != $post->user_id){
-            $post->user_id = $input['user_id'];
+        /* Update the category id of the post if changed. */
+        if ($input['category_id'] != $post->category_id){
+            Session::flash('change_category', 'Your post "'.$post->title
+                .'" in Flow "'.$post->category->name.'" has been changed to Flow "'
+                .Category::findOrFail($input['category_id'])->name.'" now!');
         }
         $post->update($input);
-        return redirect('/admin/posts');
+        return redirect('/home/posts/'.$post->slug);
     }
 
     /**
@@ -135,19 +144,15 @@ class AdminPostsController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        Session::flash('delete_post', 'The No.'.$post->id.' post "'.$post->title.'" has been deleted.');
-        if ($post->photo){
+        $post_category = $post->category;
+        Session::flash('delete_your_post', 'Your post "'.$post->title.'" in Flow "'.$post_category->name.'" has been deleted successfully!');
+        if (count($post->photo) > 0){
             /* Delete post photo from images storage path. */
             unlink(public_path().$post->photo->file);
             /* Delete post photo record from database. */
             $post->photo->delete();
         }
         $post->delete();
-        return redirect('/admin/posts');
-    }
-
-    public function post($slug){
-        $post = Post::findBySlugOrFail($slug);
-        return view('post', compact('post'));
+        return redirect('/home/'.$post_category->slug);
     }
 }

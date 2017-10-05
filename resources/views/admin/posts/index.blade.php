@@ -20,19 +20,19 @@
             </tr>
         </thead>
         <tbody>
-            @if ($posts)
+            @if (count($posts) > 0)
                 @foreach ($posts as $post)
                     <tr>
                         <td>{{ $post->id }}</td>
                         <td><img height="50" width="50" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}"></td>
                         <td>{{ $post->user->name }}</td>
                         <td>{{ $post->category->name }}</td>
-                        <td><a href="{{ route('home.post', $post->slug) }}">{{ $post->title }}</a></td>
+                        <td><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></td>
                         <td>{{ str_limit($post->body, 50) }}</td>
                         <td>{{ $post->created_at->diffForHumans() }}</td>
                         <td>{{ $post->updated_at->diffForHumans() }}</td>
-                        <td><a href="{{ route('comments.show', $post->id) }}"><button class="btn btn-info"><i class="fa fa-comments"></i> Show</button></a></td>
-                        <td><a href="{{ route('posts.edit', $post->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
+                        <td><a href="{{ route('admin.comments.show', $post->id) }}"><button class="btn btn-info"><i class="fa fa-comments"></i> Show</button></a></td>
+                        <td><a href="{{ route('admin.posts.edit', $post->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
                     </tr>
                 @endforeach
             @endif

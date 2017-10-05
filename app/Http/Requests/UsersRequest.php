@@ -28,8 +28,8 @@ class UsersRequest extends FormRequest
             $email_role = 'required|unique:users';
         }
         else{
-            // Update user request
-            $email_role = 'required';
+            // Update user request (unique ignore itself)
+            $email_role = 'required|unique:users,email,'.$this->user;
         }
         return [
             'name'      => 'required',

@@ -12,6 +12,9 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        Category::create(['name' => 'Uncategorized']);
+        Category::create([
+            'name' => 'Uncategorized',
+            'slug' => 'uncategorized'
+        ]);
     }
 }

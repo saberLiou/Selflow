@@ -4,7 +4,7 @@
         <div class="alert alert-info">{{ session('delete_photo') }}</div>
     @endif
     <h1>Photos</h1>
-    {!! Form::open(['method' => 'DELETE', 'action' => 'AdminPhotosController@multiDestroy', 'class' => 'form-inline']) !!}
+    {!! Form::open(['method' => 'DELETE', 'action' => 'Admin\PhotosController@multiDestroy', 'class' => 'form-inline']) !!}
         <table class="table">
             <thead>
                 <tr>
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($photos)
+                @if (count($photos) > 0)
                     @foreach ($photos as $photo)
                         <tr>
                             <td>{{ $photo->id }}</td>
@@ -37,7 +37,7 @@
                             <td>{{ $photo->created_at->diffForHumans() }}</td>
                             <td>{{ $photo->updated_at->diffForHumans() }}</td>
                             <td>
-                                {!! Form::open(['method' => 'DELETE', 'action' => ['AdminPhotosController@destroy', $photo->id]]) !!}
+                                {!! Form::open(['method' => 'DELETE', 'action' => ['Admin\PhotosController@destroy', $photo->id]]) !!}
                                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                                 {!! Form::close() !!}
                             </td>

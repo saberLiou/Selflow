@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <h1>Upload Photo</h1>
-    {!! Form::open(['method' => 'POST', 'action' => 'AdminPhotosController@store', 'class' => 'dropzone']) !!}
+    {!! Form::open(['method' => 'POST', 'action' => 'Admin\PhotosController@store', 'class' => 'dropzone']) !!}
     {!! Form::close() !!}
 @endsection
 @section('scripts')

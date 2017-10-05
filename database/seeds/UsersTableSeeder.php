@@ -18,7 +18,8 @@ class UsersTableSeeder extends Seeder
             'is_active' => 1,
             'name'      => 'Guo-Xun Liu',
             'email'     => 'saberliou@gmail.com',
-            'password'  => '$2y$10$WXJ98u8JXCZaOf9njHBe6O/Xl4H1QfbZ5.m.Ja2GUPJLBq7KM6oxC'
+            'password'  => '$2y$10$WXJ98u8JXCZaOf9njHBe6O/Xl4H1QfbZ5.m.Ja2GUPJLBq7KM6oxC',
+            'pwd_num'   => 10
         ]);
         
         User::create([
@@ -27,7 +28,8 @@ class UsersTableSeeder extends Seeder
             'is_active' => 0,
             'name'      => 'saberLiou',
             'email'     => 'w830708tw@yahoo.com.tw',
-            'password'  => '$2y$10$BLOeLSRlQ65EARrc.R6zNeGG8lBesqu3us7oc5d8cumT6UFkQrlpu'
+            'password'  => '$2y$10$BLOeLSRlQ65EARrc.R6zNeGG8lBesqu3us7oc5d8cumT6UFkQrlpu',
+            'pwd_num'   => 10
         ]);
     }
 }

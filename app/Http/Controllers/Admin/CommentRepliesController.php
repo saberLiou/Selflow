@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Comment, App\CommentReply;
 use App\Http\Requests\RepliesRequest;
@@ -45,7 +46,7 @@ class CommentRepliesController extends Controller
             'body'       => $request->reply
         ];
         $reply = CommentReply::create($data);
-        return redirect('/post/'.$slug);
+        return redirect('/home/posts/'.$slug);
     }
 
     /**

@@ -1,30 +1,30 @@
 @extends('layouts.admin')
 @section('content')
     <h1>Edit User</h1>
-    <div class="col-sm-4">
+    <div class="col-sm-4 text-center">
         <img height="250" width="250" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
     </div>
     <div class="col-sm-8">
-        {!! Form::model($user, ['method' => 'PATCH', 'action' => ['AdminUsersController@update', $user->id], 'files' => true]) !!}
+        {!! Form::model($user, ['method' => 'PATCH', 'action' => ['Admin\UsersController@update', $user->id], 'files' => true]) !!}
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                {!! Form::label('name', "Name:") !!}
+                {!! Form::label('name', "Name:", ['class' => 'control-label']) !!}
                 {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Edit the name.']) !!}
-                <small class="text-danger">{{ $errors->first('name') }}</small>
+                <strong class="text-danger">{{ $errors->first('name') }}</strong>
             </div>
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                {!! Form::label('email', "Email:") !!}
+                {!! Form::label('email', "E-Mail Address:", ['class' => 'control-label']) !!}
                 {!! Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Edit the email.']) !!}
-                <small class="text-danger">{{ $errors->first('email') }}</small>
+                <strong class="text-danger">{{ $errors->first('email') }}</strong>
             </div>
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                {!! Form::label('password', "Password:") !!}
+                {!! Form::label('password', "Password:", ['class' => 'control-label']) !!}
                 {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Edit the password.']) !!}
-                <small class="text-danger">{{ $errors->first('password') }}</small>
+                <strong class="text-danger">{{ $errors->first('password') }}</strong>
             </div>
             <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
-                {!! Form::label('role_id', "Role:") !!}
+                {!! Form::label('role_id', "Role:", ['class' => 'control-label']) !!}
                 {!! Form::select('role_id', array_map('ucfirst', $roles), $user->role_id, ['class' => 'form-control', 'placeholder' => '-- Choose a role. --']) !!}
-                <small class="text-danger">{{ $errors->first('role_id') }}</small>
+                <strong class="text-danger">{{ $errors->first('role_id') }}</strong>
             </div>
             <div class="form-group">
                 {!! Form::label('is_active', "Status:") !!}
@@ -34,13 +34,17 @@
                 {!! Form::label('photo', "Photo:") !!}
                 {!! Form::file('photo', ['class' => 'form-control']) !!}
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary col-sm-2 col-sm-offset-3"><i class="fa fa-upload"></i> Update</button>
+            <div class="col-md-6 col-xs-6">
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> Update</button>
+                </div>
             </div>
         {!! Form::close() !!}
-        {!! Form::open(['method' => 'DELETE', 'action' => ['AdminUsersController@destroy', $user->id]]) !!}
-            <div class="form-group">
-                <button type="submit" class="btn btn-danger col-sm-2 col-sm-offset-2"><i class="fa fa-trash"></i> Delete</button>
+        {!! Form::open(['method' => 'DELETE', 'action' => ['Admin\UsersController@destroy', $user->id]]) !!}
+            <div class="col-md-6 col-xs-6">
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                </div>
             </div>
         {!! Form::close() !!}
     </div>

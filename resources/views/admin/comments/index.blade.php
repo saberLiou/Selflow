@@ -20,27 +20,27 @@
             </tr>
         </thead>
         <tbody>
-            @if ($comments)
+            @if (count($comments) > 0)
                 @foreach ($comments as $comment)
                     <tr>
                         <td>{{ $comment->id }}</td>
-                        <td><a href="{{ route('home.post', $comment->post->slug) }}">{{ $comment->post->title }}</a></td>
+                        <td><a href="{{ route('posts.show', $comment->post->slug) }}">{{ $comment->post->title }}</a></td>
                         <td><img height="50" width="50" src="{{ $comment->user->photo ? $comment->user->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}"></td>
                         <td>{{ $comment->user->name }}</td>
                         <td>{{ $comment->body }}</td>
                         <td>{{ $comment->created_at->diffForHumans() }}</td>
                         <td>{{ $comment->updated_at->diffForHumans() }}</td>
-                        <td><a href="{{ route('replies.show', $comment->id) }}"><button class="btn btn-info"><i class="fa fa-comments-o"></i> Show</button></a></td>
+                        <td><a href="{{ route('admin.replies.show', $comment->id) }}"><button class="btn btn-info"><i class="fa fa-comments-o"></i> Show</button></a></td>
                         <td>
                             @if ($comment->is_active == 1)
-                                {!! Form::model($comment, ['method' => 'PATCH', 'action' => ['PostCommentsController@update', $comment->id."@"]]) !!}
+                                {!! Form::model($comment, ['method' => 'PATCH', 'action' => ['Admin\PostCommentsController@update', $comment->id."@"]]) !!}
                                     <input type="hidden" name="is_active" value="0">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-warning"><i class="fa fa-close"></i> Inactive</button>
                                     </div>
                                 {!! Form::close() !!}
                             @else
-                                {!! Form::model($comment, ['method' => 'PATCH', 'action' => ['PostCommentsController@update', $comment->id."@"]]) !!}
+                                {!! Form::model($comment, ['method' => 'PATCH', 'action' => ['Admin\PostCommentsController@update', $comment->id."@"]]) !!}
                                     <input type="hidden" name="is_active" value="1">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Active</button>
@@ -49,7 +49,7 @@
                             @endif
                         </td>
                         <td>
-                            {!! Form::open(['method' => 'DELETE', 'action' => ['PostCommentsController@destroy', $comment->id."@"]]) !!}
+                            {!! Form::open(['method' => 'DELETE', 'action' => ['Admin\PostCommentsController@destroy', $comment->id."@"]]) !!}
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                                 </div>

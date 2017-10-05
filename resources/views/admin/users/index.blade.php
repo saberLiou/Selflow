@@ -10,7 +10,8 @@
                 <th>ID</th>
                 <th>Photo</th>
                 <th>Name</th>
-                <th>Email</th>
+                <th>E-Mail Address</th>
+                <th>Password</th>
                 <th>Role</th>
                 <th>Status</th>
                 <th>Created Time</th>
@@ -19,18 +20,19 @@
             </tr>
         </thead>
         <tbody>
-            @if ($users)
+            @if (count($users) > 0)
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td><img height="50" width="50" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}"></td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>@for ($i = 0; $i < $user->pwd_num; $i++)*@endfor</td>
                         <td>{{ ucfirst($user->role->name) }}</td>
                         <td>{{ $user->is_active ? "Active" : "Inactive" }}</td>
                         <td>{{ $user->created_at->diffForHumans() }}</td>
                         <td>{{ $user->updated_at->diffForHumans() }}</td>
-                        <td><a href="{{ route('users.edit', $user->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
+                        <td><a href="{{ route('admin.users.edit', $user->id) }}"><button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button></a></td>
                     </tr>
                 @endforeach
             @endif

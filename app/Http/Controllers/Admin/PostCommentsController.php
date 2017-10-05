@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post, App\Comment;
 use App\Http\Requests\CommentsRequest;
@@ -47,7 +48,7 @@ class PostCommentsController extends Controller
             'body'    => $request->body
         ];
         Comment::create($data);
-        return redirect('/post/'.$slug);
+        return redirect('/home/posts/'.$slug);
     }
 
     /**

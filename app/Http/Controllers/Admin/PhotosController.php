@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Photo;
 use Illuminate\Support\Facades\Session;
 
-class AdminPhotosController extends Controller
+class PhotosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,8 +40,13 @@ class AdminPhotosController extends Controller
     {   
         $file = $request->file('file');
         $name = $file->getClientOriginalName();
-        /* Save file original name into database. */
+        /* Save file name into database first. */
         $photo = Photo::create(['file' => $name]);
+        /* Slug id with file name to avoid photos with same file name
+           unlinked at the delete moment. */
+        $name = strval($photo->id)."_".substr($photo->file, 8);
+        /* Update the slugged file name into database. */
+        $photo->update(['file' => $name]);
         /* Copy file into /public/images. */
         $file->move($photo->directory, $name);
     }
@@ -89,9 +95,9 @@ class AdminPhotosController extends Controller
     {
         $photo = Photo::findOrFail($id);
         Session::flash('delete_photo', 'The No.'.$photo->id.' photo '.explode('/', $photo->file)[2].' has been deleted.');
-        /* Delete post photo from images storage path. */
+        /* Delete photo from /public/images. */
         unlink(public_path().$photo->file);
-        /* Delete post photo record from database. */
+        /* Delete photo record from database. */
         $photo->delete();
         return redirect('/admin/photos');
     }
@@ -100,7 +106,9 @@ class AdminPhotosController extends Controller
         // return dd($request->all());
         $photos = Photo::findOrFail($request->delete_photos);
         foreach ($photos as $photo){
+            /* Delete photo from /public/images. */
             unlink(public_path().$photo->file);
+            /* Delete photo record from database. */
             $photo->delete();
         }
         return redirect('/admin/photos');

@@ -12,37 +12,36 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $categories = App\Category::all();
+    return view('welcome', compact('categories'));
+})->name('brand');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/post/{slug}', ['as' => 'home.post', 'uses' => 'AdminPostsController@post']);
-Route::post('/post/{slug}/comments', ['as' => 'home.comment', 'uses' => 'PostCommentsController@store']);
-Route::post('/post/{slug}/comment/replies', ['as' => 'home.reply', 'uses' => 'CommentRepliesController@store']);
-
-Route::group(['middleware' => 'admin'], function(){
-    Route::resource('/admin/users', 'AdminUsersController');
-    Route::resource('/admin/posts', 'AdminPostsController');
-    Route::resource('/admin/categories', 'AdminCategoriesController');
-    Route::resource('/admin/photos', 'AdminPhotosController');
-    Route::delete('/admin/photos_multi_delete', 'AdminPhotosController@multiDestroy');
-    // Route::resource('/admin/comments', 'PostCommentsController');
-    // Route::resource('/admin/comment/replies', 'CommentRepliesController');
-    
-    Route::get('/admin/comments', ['as' => 'comments.index', 'uses' => 'PostCommentsController@index']);
-    Route::get('/admin/comments/{comment}', ['as' => 'comments.show', 'uses' => 'PostCommentsController@show']);
-    Route::patch('/admin/comments/{comment}', ['as' => 'comments.update', 'uses' => 'PostCommentsController@update']);
-    Route::delete('/admin/comments/{comment}', ['as' => 'comments.destroy', 'uses' => 'PostCommentsController@destroy']);
-
-    Route::get('/admin/comment/replies/{reply}', ['as' => 'replies.show', 'uses' => 'CommentRepliesController@show']);
-    Route::patch('/admin/comment/replies/{reply}', ['as' => 'replies.update', 'uses' => 'CommentRepliesController@update']);
-    Route::delete('/admin/comment/replies/{reply}', ['as' => 'replies.destroy', 'uses' => 'CommentRepliesController@destroy']);
+Route::group(['middleware' => 'auth'], function(){
+    Route::group(['middleware' => 'author'], function(){
+        Route::resource('/home/posts', 'PostsController', ['except' => 'show']);
+    });
+    Route::get('/home/posts/{slug}', 'PostsController@show')->name('posts.show');
+    Route::post('/home/posts/{slug}/comment', 'Admin\PostCommentsController@store')->name('posts.comment');
+    Route::post('/home/posts/{slug}/comment/reply', 'Admin\CommentRepliesController@store')->name('posts.reply');
+    Route::resource('/home/users', 'UsersController', ['except' => ['create', 'store', 'destroy']]);
+    Route::get('/home/{category}', 'HomeController@index')->name('home');
 });
 
-/* Check if admin.blade.php works. */
-// Route::get('/admin', function(){
-//     return view('layouts.admin');
-// });
+Route::group(['middleware' => 'admin'], function(){
+    Route::resource('/admin/users', 'Admin\UsersController', ['as' => 'admin']);
+    Route::resource('/admin/posts', 'Admin\PostsController', ['as' => 'admin', 'except' => 'show']);
+    Route::resource('/admin/categories', 'Admin\CategoriesController', ['as' => 'admin', 'except' => ['create', 'show']]);
+    Route::resource('/admin/photos', 'Admin\PhotosController', ['as' => 'admin', 'except' => ['show', 'edit', 'update']]);
+    Route::delete('/admin/photos_multi_delete', 'Admin\PhotosController@multiDestroy', ['as' => 'admin'])->name('admin.photos.multi.destroy');
+    
+    Route::get('/admin/comments', 'Admin\PostCommentsController@index')->name('admin.comments.index');
+    Route::get('/admin/comments/{comment}', 'Admin\PostCommentsController@show')->name('admin.comments.show');
+    Route::patch('/admin/comments/{comment}', 'Admin\PostCommentsController@update')->name('admin.comments.update');
+    Route::delete('/admin/comments/{comment}', 'Admin\PostCommentsController@destroy')->name('admin.comments.destroy');
+
+    Route::get('/admin/comment/replies/{reply}', 'Admin\CommentRepliesController@show')->name('admin.replies.show');
+    Route::patch('/admin/comment/replies/{reply}', 'Admin\CommentRepliesController@update')->name('admin.replies.update');
+    Route::delete('/admin/comment/replies/{reply}', 'Admin\CommentRepliesController@destroy')->name('admin.replies.destroy');
+});

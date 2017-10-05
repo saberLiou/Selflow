@@ -23,12 +23,25 @@ class PostsRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title'       => 'required',
-            'category_id' => 'required',
-            'user_id'     => 'required',
-            'body'        => 'required'
-        ];
+        if ($this->method() == "POST"){
+            // Create user request
+            return [
+                'title'       => 'required',
+                'category_id' => 'required',
+                'photo'       => 'required',
+                'user_id'     => 'required',
+                'body'        => 'required'
+            ];
+        }
+        else{
+            // Update user request
+            return [
+                'title'       => 'required',
+                'category_id' => 'required',
+                'user_id'     => 'required',
+                'body'        => 'required'
+            ];
+        }
     }
 
     /**
@@ -38,11 +51,24 @@ class PostsRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-            'title.required'        => 'The title field can not be blank.',
-            'category_id.required'  => 'Please select a category.',
-            'user_id.required'      => 'Please select an author or administrator',
-            'body.required'         => 'The description field can not be blank.',
-        ];
+        if ($this->method() == "POST"){
+            // Create user request
+            return [
+                'title.required'        => 'The title field can not be blank.',
+                'category_id.required'  => 'Please select a category.',
+                'photo.required'        => 'Please choose a picture for this post.',
+                'user_id.required'      => 'Please select an author or administrator',
+                'body.required'         => 'The description field can not be blank.',
+            ];
+        }
+        else{
+            // Update user request
+            return [
+                'title.required'        => 'The title field can not be blank.',
+                'category_id.required'  => 'Please select a category.',
+                'user_id.required'      => 'Please select an author or administrator',
+                'body.required'         => 'The description field can not be blank.',
+            ];
+        }
     }
 }

@@ -12,7 +12,7 @@ class PhotosTableSeeder extends Seeder
      */
     public function run()
     {
-        Photo::create(['file' => 'headPhotoEX.jpg']);
-        Photo::create(['file' => 'headPhotoVII.jpg']);
+        Photo::create(['file' => '1_headPhotoEX.jpg']);
+        Photo::create(['file' => '2_headPhotoVII.jpg']);
     }
 }

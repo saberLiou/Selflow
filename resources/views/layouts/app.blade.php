@@ -19,6 +19,17 @@
 
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <style>
+        .links > a {
+            color: #636b6f;
+            /* padding: 0 25px; */
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            /* text-transform: uppercase; */
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -35,7 +46,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ route('brand') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
@@ -43,7 +54,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -55,15 +66,23 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
                                     @if (Auth::user()->isAdmin())
                                         <li>
-                                            <a href="{{ route('users.index') }}">Admin Panel</a>
+                                            <a href="{{ route('admin.users.index') }}">Admin Panel</a>
                                         </li>
                                     @endif
+                                    @if (Auth::user()->isAuthor())
+                                        <li>
+                                            <a href="{{ route('posts.create') }}">Write a post</a>
+                                        </li>
+                                    @endif
+                                    <li>
+                                        <a href="{{ route('users.index') }}">Profile</a>
+                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -82,10 +101,8 @@
                 </div>
             </div>
         </nav>
-
         @yield('content')
     </div>
-
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -68,6 +68,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'pwd_num' => strlen($data['password']),
             'role_id' => $data['role'],
             'is_active' => 1,
             'photo_id' => isset($data['photo_id']) ? $data['photo_id'] : null
@@ -81,8 +82,13 @@ class RegisterController extends Controller
         $input = $request->all();
         if ($file = $request->file('photo')){
             $name = $file->getClientOriginalName();
-            /* Save file original name into database. */
+            /* Save file name into database. */
             $photo = Photo::create(['file' => $name]);
+            /* Slug id with file name to avoid photos with same file name
+               unlinked at the delete moment. */
+            $name = strval($photo->id)."_".substr($photo->file, 8);
+            /* Update the slugged file name into database. */
+            $photo->update(['file' => $name]);
             /* Copy file into /public/images. */
             $file->move($photo->directory, $name);
             /* Save photo id into users table. */

@@ -3,7 +3,7 @@
     @if (Session::has('delete_reply'))
         <div class="alert alert-info">{{ session('delete_reply') }}</div>
     @endif
-    <h1>Replies of Comment "{{ $comment->body }}"<br>on Post "<a href="{{ route('home.post', $comment->post->slug) }}">{{ $comment->post->title }}</a>"</h1>
+    <h1>Replies of Comment "{{ $comment->body }}"<br>on Post "<a href="{{ route('posts.show', $comment->post->slug) }}">{{ $comment->post->title }}</a>"</h1>
     <table class="table">
         <thead>
             <tr>
@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @if ($replies)
+            @if (count($replies) > 0)
                 @foreach ($replies as $reply)
                     <tr>
                         <td>{{ $reply->id }}</td>
@@ -29,14 +29,14 @@
                         <td>{{ $reply->updated_at->diffForHumans() }}</td>
                         <td>
                             @if ($reply->is_active == 1)
-                                {!! Form::model($reply, ['method' => 'PATCH', 'action' => ['CommentRepliesController@update', $reply->id."@".$comment->id]]) !!}
+                                {!! Form::model($reply, ['method' => 'PATCH', 'action' => ['Admin\CommentRepliesController@update', $reply->id."@".$comment->id]]) !!}
                                     <input type="hidden" name="is_active" value="0">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-warning"><i class="fa fa-close"></i> Inactive</button>
                                     </div>
                                 {!! Form::close() !!}
                             @else
-                                {!! Form::model($reply, ['method' => 'PATCH', 'action' => ['CommentRepliesController@update', $reply->id."@".$comment->id]]) !!}
+                                {!! Form::model($reply, ['method' => 'PATCH', 'action' => ['Admin\CommentRepliesController@update', $reply->id."@".$comment->id]]) !!}
                                     <input type="hidden" name="is_active" value="1">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Active</button>
@@ -45,7 +45,7 @@
                             @endif
                         </td>
                         <td>
-                            {!! Form::open(['method' => 'DELETE', 'action' => ['CommentRepliesController@destroy', $reply->id."@".$comment->id]]) !!}
+                            {!! Form::open(['method' => 'DELETE', 'action' => ['Admin\CommentRepliesController@destroy', $reply->id."@".$comment->id]]) !!}
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
                                 </div>
