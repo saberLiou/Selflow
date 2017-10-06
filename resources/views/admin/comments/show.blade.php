@@ -23,7 +23,7 @@
                 @foreach ($comments as $comment)
                     <tr>
                         <td>{{ $comment->id }}</td>
-                        <td><img height="50" width="50" src="{{ $comment->user->photo ? $comment->user->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}"></td>
+                        <td><img height="50" width="50" src="{{ $comment->user->photo ? Cloudder::secureShow($comment->user->photo->user_directory.$comment->user->photo->file) : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}"></td>
                         <td>{{ $comment->user->name }}</td>
                         <td>{{ $comment->body }}</td>
                         <td>{{ $comment->created_at->diffForHumans() }}</td>

@@ -22,7 +22,7 @@
                 @foreach ($replies as $reply)
                     <tr>
                         <td>{{ $reply->id }}</td>
-                        <td><img height="50" width="50" src="{{ $reply->user->photo ? $reply->user->photo->file : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $reply->user->photo ? $reply->user->photo->file : 'Unknown' }}"></td>
+                        <td><img height="50" width="50" src="{{ $reply->user->photo ? Cloudder::secureShow($reply->user->photo->user_directory.$reply->user->photo->file) : 'https://placehold.it/50x50/?text=Unknown' }}" alt="{{ $reply->user->photo ? $reply->user->photo->file : 'Unknown' }}"></td>
                         <td>{{ $reply->user->name }}</td>
                         <td>{{ $reply->body }}</td>
                         <td>{{ $reply->created_at->diffForHumans() }}</td>

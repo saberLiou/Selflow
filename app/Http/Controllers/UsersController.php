@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User, App\Role, App\Photo;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UsersRequest;
+use JD\Cloudder\Facades\Cloudder;
 
 class UsersController extends Controller
 {
@@ -87,28 +88,34 @@ class UsersController extends Controller
         $user = Auth::user();
 
         if ($file = $request->file('photo')){
-            $name = $file->getClientOriginalName();
+            /* Trim file extension. */
+            $extension = ".".$file->getClientOriginalExtension();
+            $name = substr($file->getClientOriginalName(), 0, -strlen($extension));
+            
             if (count($user->photo) > 0){
                 /* Remove the file in /public/images first. */
-                unlink(public_path().$user->photo->file);
+                // unlink(public_path().$user->photo->file);
+                Cloudder::destroy($user->photo->file, ['folder' => $user->photo->user_directory, 'invalidate' => true]);
                 /* Slug id with file name to avoid photos with same file name
                    unlinked at the delete moment. */
                 $name = strval($user->photo_id)."_".$name;
                 /* Update the slugged file name into database. */
                 Photo::findOrFail($user->photo_id)->update(['file' => $name]);
                 /* Save the file in /public/images. */
-                $file->move($user->photo->directory, $name);
+                // $file->move($user->photo->directory, $name);
+                Cloudder::upload($file, $name, ['folder' => $user->photo->user_directory]);
             }
             else{
                 /* Save file name into database first. */
                 $photo = Photo::create(['file' => $name]);
                 /* Slug id with file name to avoid photos with same file name
                    unlinked at the delete moment. */
-                $name = strval($photo->id)."_".substr($photo->file, 8);
+                $name = strval($photo->id)."_".$photo->file;
                 /* Update the slugged file name into database. */
                 $photo->update(['file' => $name]);
                 /* Save the file in /public/images. */
-                $file->move($photo->directory, $name);
+                // $file->move($photo->directory, $name);
+                Cloudder::upload($file, $name, ['folder' => $photo->user_directory]);
                 /* Save photo id into users table. */
                 $input['photo_id'] = $photo->id;
             }

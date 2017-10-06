@@ -8,7 +8,7 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        @if (Auth::user()->isAuthor())
+                        @if (Auth::user()->isAuthor() and Auth::user()->id == $post->user->id)
                             <div class="pull-right">
                                 <a href="{{ route('posts.edit', $post->slug) }}"><button class="btn btn-info">Edit</button></a>
                             </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="panel-body">
                         <!-- Preview Image -->
-                        <img height="600" width="600" class="img-responsive img-rounded center-block" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/900x300/?text=No%20Photo' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}">
+                        <img height="600" width="600" class="img-responsive img-rounded center-block" src="{{ $post->photo ? Cloudder::secureShow($post->photo->post_directory.$post->photo->file, ['width' => 600, 'height' => 600]) : 'https://placehold.it/600x600/?text=No%20Photo' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}">
                         <hr>
                         <!-- Post Content -->
                         <p>{!! $post->body !!}</p>
@@ -39,7 +39,7 @@
                                 <!-- Comment -->
                                 <div class="media">
                                     <a class="pull-left" href="{{ route('users.show', $comment->user->id) }}">
-                                        <img height="64" width="64" class="media-object img-rounded" src="{{ $comment->user->photo ? $comment->user->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}">
+                                        <img height="64" width="64" class="media-object img-rounded" src="{{ $comment->user->photo ? Cloudder::secureShow($comment->user->photo->user_directory.$comment->user->photo->file) : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ $comment->user->photo ? $comment->user->photo->file : 'Unknown' }}">
                                     </a>
                                     <div class="media-body">
                                         <h4 class="media-heading"><a href="{{ route('users.show', $comment->user->id) }}">{{ $comment->user->name }}</a>
@@ -52,7 +52,7 @@
                                             @if ($reply->is_active)
                                                 <div class="media">
                                                     <a class="pull-left" href="{{ route('users.show', $reply->user->id) }}">
-                                                        <img height="64" width="64" class="media-object img-rounded" src="{{ $reply->user->photo ? $reply->user->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ $reply->user->photo ? $reply->user->photo->file : 'Unknown' }}">
+                                                        <img height="64" width="64" class="media-object img-rounded" src="{{ $reply->user->photo ? Cloudder::secureShow($reply->user->photo->user_directory.$reply->user->photo->file) : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ $reply->user->photo ? $reply->user->photo->file : 'Unknown' }}">
                                                     </a>
                                                     <div class="media-body">
                                                         <h4 class="media-heading"><a href="{{ route('users.show', $reply->user->id) }}">{{ $reply->user->name }}</a>
@@ -68,7 +68,7 @@
                                         @if (Auth::user()->is_active)
                                             <div class="media">
                                                 <a class="pull-left" href="{{ route('users.show', Auth::user()->id) }}">
-                                                    <img height="64" width="64" class="media-object img-rounded" src="{{ Auth::user()->photo ? Auth::user()->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
+                                                    <img height="64" width="64" class="media-object img-rounded" src="{{ Auth::user()->photo ? Cloudder::secureShow(Auth::user()->photo->user_directory.Auth::user()->photo->file) : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
                                                 </a>
                                                 <div class="media-body">
                                                     {!! Form::open(['method' => 'POST', 'action' => ['Admin\CommentRepliesController@store', $post->slug]])!!}
@@ -93,7 +93,7 @@
                         @if (Auth::user()->is_active)
                             <div class="media">
                                 <a class="pull-left" href="{{ route('users.show', Auth::user()->id) }}">
-                                    <img height="64" width="64" class="media-object img-rounded" src="{{ Auth::user()->photo ? Auth::user()->photo->file : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
+                                    <img height="64" width="64" class="media-object img-rounded" src="{{ Auth::user()->photo ? Cloudder::secureShow(Auth::user()->photo->user_directory.Auth::user()->photo->file) : 'https://placehold.it/64x64/?text=Unknown' }}" alt="{{ Auth::user()->photo ? Auth::user()->photo->file : 'Unknown' }}">
                                 </a>
                                 <div class="media-body">
                                     {!! Form::open(['method' => 'POST', 'action' => ['Admin\PostCommentsController@store', $post->slug]])!!}

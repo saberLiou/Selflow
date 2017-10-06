@@ -25,8 +25,14 @@
                     @foreach ($photos as $photo)
                         <tr>
                             <td>{{ $photo->id }}</td>
-                            <td><img height="50" width="50" src="{{ $photo->file }}" alt="{{ $photo->file }}"></td>
-                            <td>{{ explode('/', $photo->file)[2] }}</td>
+                            @if ($photo->user) 
+                                <td><img height="50" width="50" src="{{ Cloudder::secureShow($photo->user_directory.$photo->file) }}" alt="{{ $photo->file }}"></td>
+                            @elseif ($photo->post)
+                                <td><img height="50" width="50" src="{{ Cloudder::secureShow($photo->post_directory.$photo->file) }}" alt="{{ $photo->file }}"></td>
+                            @else 
+                                <td><img height="50" width="50" src="{{ Cloudder::secureShow($photo->directory.$photo->file) }}" alt="{{ $photo->file }}"></td>
+                            @endif
+                            <td>{{ $photo->file }}</td>
                             @if ($photo->user)
                                 <td>{{ 'User: '.$photo->user->name }}</td>
                             @elseif ($photo->post)

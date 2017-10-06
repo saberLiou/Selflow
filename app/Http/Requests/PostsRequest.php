@@ -24,24 +24,20 @@ class PostsRequest extends FormRequest
     public function rules()
     {
         if ($this->method() == "POST"){
-            // Create user request
-            return [
-                'title'       => 'required',
-                'category_id' => 'required',
-                'photo'       => 'required',
-                'user_id'     => 'required',
-                'body'        => 'required'
-            ];
+            // Create post request
+            $photo_rule = 'required|image';
         }
         else{
-            // Update user request
-            return [
-                'title'       => 'required',
-                'category_id' => 'required',
-                'user_id'     => 'required',
-                'body'        => 'required'
-            ];
+            // Update post request
+            $photo_rule = 'image';
         }
+        return [
+            'title'       => 'required',
+            'category_id' => 'required',
+            'photo'       => $photo_rule ,
+            'user_id'     => 'required',
+            'body'        => 'required'
+        ];
     }
 
     /**
@@ -51,24 +47,13 @@ class PostsRequest extends FormRequest
      */
     public function messages()
     {
-        if ($this->method() == "POST"){
-            // Create user request
-            return [
-                'title.required'        => 'The title field can not be blank.',
-                'category_id.required'  => 'Please select a category.',
-                'photo.required'        => 'Please choose a picture for this post.',
-                'user_id.required'      => 'Please select an author or administrator',
-                'body.required'         => 'The description field can not be blank.',
-            ];
-        }
-        else{
-            // Update user request
-            return [
-                'title.required'        => 'The title field can not be blank.',
-                'category_id.required'  => 'Please select a category.',
-                'user_id.required'      => 'Please select an author or administrator',
-                'body.required'         => 'The description field can not be blank.',
-            ];
-        }
+        return [
+            'title.required'        => 'The title field can not be blank.',
+            'category_id.required'  => 'Please select a category.',
+            'photo.required'        => 'Please choose a picture for this post.',
+            'photo.image'           => 'Please make sure it\'s a photo',
+            'user_id.required'      => 'Please select an author or administrator',
+            'body.required'         => 'The description field can not be blank.',
+        ];
     }
 }

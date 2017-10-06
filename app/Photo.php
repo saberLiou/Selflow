@@ -10,7 +10,10 @@ class Photo extends Model
      * Images storage path.
      * @var array
      */
-    public $directory = "images";
+    // public $directory = "images";
+    public $directory = "Selflow/images/";
+    public $user_directory = "Selflow/images/users/";
+    public $post_directory = "Selflow/images/posts/";
 
     protected $fillable = ['file'];
 
@@ -19,9 +22,9 @@ class Photo extends Model
      * Accessor function
      * @return modified file path
      */
-    public function getFileAttribute($value){
-        return "/".$this->directory."/".$value;
-    }
+    // public function getFileAttribute($value){
+    //     return "/".$this->directory."/".$value;
+    // }
 
     public function user(){
         return $this->hasOne('App\User');

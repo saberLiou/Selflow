@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="col-md-4 text-center">
-        <img height="250" width="250" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
+        <img height="250" width="250" src="{{ $user->photo ? Cloudder::secureShow($user->photo->user_directory.$user->photo->file, ['width' => 250, 'height' => 250, 'crop' => 'fill', 'gravity' => 'face']) : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
     </div>
     <div class="col-md-8 text-center">
         <table class="table">

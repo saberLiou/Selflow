@@ -2,7 +2,7 @@
 @section('content')
     <h1>Edit User</h1>
     <div class="col-sm-4 text-center">
-        <img height="250" width="250" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
+        <img height="250" width="250" src="{{ $user->photo ? Cloudder::secureShow($user->photo->user_directory.$user->photo->file, ['width' => 250, 'height' => 250, 'crop' => 'fill', 'gravity' => 'face']) : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
     </div>
     <div class="col-sm-8">
         {!! Form::model($user, ['method' => 'PATCH', 'action' => ['Admin\UsersController@update', $user->id], 'files' => true]) !!}
@@ -30,9 +30,10 @@
                 {!! Form::label('is_active', "Status:") !!}
                 {!! Form::select('is_active', [1 => 'Active', 0 => 'Inactive'], $user->is_active, ['class' => 'form-control']) !!}
             </div>
-            <div class="form-group">
+            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
                 {!! Form::label('photo', "Photo:") !!}
                 {!! Form::file('photo', ['class' => 'form-control']) !!}
+                <strong class="text-danger">{{ $errors->first('photo') }}</strong>
             </div>
             <div class="col-md-6 col-xs-6">
                 <div class="form-group text-center">

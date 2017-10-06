@@ -25,17 +25,18 @@ class UsersRequest extends FormRequest
     {
         if ($this->method() == "POST"){
             // Create user request
-            $email_role = 'required|unique:users';
+            $email_rule = 'required|unique:users';
         }
         else{
             // Update user request (unique ignore itself)
-            $email_role = 'required|unique:users,email,'.$this->user;
+            $email_rule = 'required|unique:users,email,'.$this->user;
         }
         return [
             'name'      => 'required',
-            'email'     => $email_role,
+            'email'     => $email_rule,
             'password'  => 'required',
-            'role_id'   => 'required'
+            'role_id'   => 'required',
+            'photo'     => 'image'
         ];
     }
 
@@ -52,6 +53,7 @@ class UsersRequest extends FormRequest
             'email.unique'      => 'This email is already registered.',
             'password.required' => 'The password field can not be blank.',
             'role_id.required'  => 'Please select a role.',
+            'photo.image'       => 'Please make sure it\'s a photo'
         ];
     }
 }

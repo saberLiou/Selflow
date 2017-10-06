@@ -16,7 +16,7 @@
 
                                 <div class="panel-body">
                                     <a href="{{ route('posts.show', $post->slug) }}">
-                                        <img height="600" width="600" class="img-responsive img-rounded center-block" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/600x600/?text=No%20Photo' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}">
+                                        <img height="600" width="600" class="img-responsive img-rounded center-block" src="{{ $post->photo ? Cloudder::secureShow($post->photo->post_directory.$post->photo->file, ['width' => 600, 'height' => 600]) : 'https://placehold.it/600x600/?text=No%20Photo' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}">
                                     </a>
                                 </div>
                             </div>

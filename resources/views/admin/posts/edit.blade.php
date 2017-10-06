@@ -3,7 +3,7 @@
     <!-- @include('includes.tinyeditor') -->
     <h1>Edit Post</h1>
     <div class="col-sm-4 text-center">
-        <img height="250" width="250" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}" class="img-response img-rounded">
+        <img height="250" width="250" src="{{ $post->photo ? Cloudder::secureShow($post->photo->post_directory.$post->photo->file, ['width' => 250, 'height' => 250]) : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}" class="img-response img-rounded">
     </div>
     <div class="col-sm-8">
         {!! Form::model($post, ['method' => 'PATCH', 'action' => ['Admin\PostsController@update', $post->id], 'files' => true]) !!}
@@ -22,9 +22,10 @@
                 {!! Form::select('user_id', $users, $post->user_id, ['class' => 'form-control', 'placeholder' => '-- Choose an author. --']) !!}
                 <strong class="text-danger">{{ $errors->first('user_id') }}</strong>
             </div>
-            <div class="form-group">
+            <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
                 {!! Form::label('photo', "Photo:", ['class' => 'control-label']) !!}
                 {!! Form::file('photo', ['class' => 'form-control']) !!}
+                <strong class="text-danger">{{ $errors->first('photo') }}</strong>
             </div>
             <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
                 {!! Form::label('body', "Description:", ['class' => 'control-label'])!!}

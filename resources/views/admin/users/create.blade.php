@@ -26,9 +26,10 @@
             {!! Form::label('is_active', "Status:") !!}
             {!! Form::select('is_active', [1 => 'Active', 0 => 'Inactive'], 0, ['class' => 'form-control']) !!}
         </div>
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
             {!! Form::label('photo', "Photo:") !!}
             {!! Form::file('photo', ['class' => 'form-control']) !!}
+            <strong class="text-danger">{{ $errors->first('photo') }}</strong>
         </div>
         <div class="form-group text-center">
             {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}

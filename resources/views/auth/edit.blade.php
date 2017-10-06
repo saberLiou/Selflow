@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="col-sm-4 text-center">
-            <img height="300" width="300" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
+            <img height="300" width="300" src="{{ $user->photo ? Cloudder::secureShow($user->photo->user_directory.$user->photo->file, ['width' => 300, 'height' => 300, 'crop' => 'fill', 'gravity' => 'face']) : 'https://placehold.it/300x300/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
         </div>
         <br>
         <div class="col-sm-8">
@@ -32,9 +32,10 @@
                             {!! Form::select('role_id', array_map('ucfirst', $roles), $user->role_id, ['class' => 'form-control', 'placeholder' => '-- Choose a role. --']) !!}
                             <strong class="text-danger">{{ $errors->first('role_id') }}</strong>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}">
                             {!! Form::label('photo', "Photo:") !!}
                             {!! Form::file('photo', ['class' => 'form-control']) !!}
+                            <strong class="text-danger">{{ $errors->first('photo') }}</strong>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary center-block"><i class="fa fa-upload"></i> Update</button>

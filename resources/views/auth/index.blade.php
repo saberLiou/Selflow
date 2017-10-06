@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="col-md-4 text-center">
-            <img height="300" width="300" src="{{ $user->photo ? $user->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
+            <img height="300" width="300" src="{{ $user->photo ? Cloudder::secureShow($user->photo->user_directory.$user->photo->file, ['width' => 300, 'height' => 300, 'crop' => 'fill', 'gravity' => 'face']) : 'https://placehold.it/300x300/?text=Unknown' }}" alt="{{ $user->photo ? $user->photo->file : 'Unknown' }}" class="img-response img-rounded">
         </div>
         <br>
         <div class="col-md-8">

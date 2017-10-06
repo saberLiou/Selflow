@@ -3,7 +3,7 @@
     <!-- @include('includes.tinyeditor') -->
     <div class="container">
         <div class="col-sm-4 text-center">
-            <img height="300" width="300" src="{{ $post->photo ? $post->photo->file : 'https://placehold.it/250x250/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}" class="img-response img-rounded">
+            <img height="300" width="300" src="{{ $post->photo ? Cloudder::secureShow($post->photo->post_directory.$post->photo->file, ['width' => 300, 'height' => 300]) : 'https://placehold.it/300x300/?text=Unknown' }}" alt="{{ $post->photo ? $post->photo->file : 'Unknown' }}" class="img-response img-rounded">
         </div>
         <br>
         <div class="col-sm-8">

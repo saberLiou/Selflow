@@ -53,6 +53,7 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed',
             'role' => 'required',
+            'photo' => 'image'
         ]);
     }
 
@@ -81,16 +82,19 @@ class RegisterController extends Controller
 
         $input = $request->all();
         if ($file = $request->file('photo')){
-            $name = $file->getClientOriginalName();
+            /* Trim file extension. */
+            $extension = ".".$file->getClientOriginalExtension();
+            $name = substr($file->getClientOriginalName(), 0, -strlen($extension));
             /* Save file name into database. */
             $photo = Photo::create(['file' => $name]);
             /* Slug id with file name to avoid photos with same file name
                unlinked at the delete moment. */
-            $name = strval($photo->id)."_".substr($photo->file, 8);
+            $name = strval($photo->id)."_".$photo->file;
             /* Update the slugged file name into database. */
             $photo->update(['file' => $name]);
             /* Copy file into /public/images. */
-            $file->move($photo->directory, $name);
+            // $file->move($photo->directory, $name);
+            Cloudder::upload($file, $name, ['folder' => $photo->user_directory]);
             /* Save photo id into users table. */
             $input['photo_id'] = $photo->id;
         }
